@@ -1,1 +1,1 @@
-# Amateur radio DMR 사용하기
+# 아마추어 무선통신 정보
