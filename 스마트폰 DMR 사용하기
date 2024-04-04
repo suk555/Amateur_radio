@@ -1,0 +1,68 @@
+         [ 스마트폰 리그 DMR 통신하기 ]
+=========================================
+               Droidstar
+=========================================
+https://www.qrz.com/
+https://radioid.net/
+Radio ID(DMR) : xxxxxxxx
+안드로이드 앱 : droidstar
+https://brandmeister.network/
+Hotspot Security pw : xxxxxxxx
+https://hose.brandmeister.network (사용자 대화내용 듣기)
+
+— DroidStar 통신 방법 —
+  0. DMR모니터링 : http://lhmon.duckdns.org
+1. 호출 시험 - TGID 450997 -> Private -> Connect -> TX 클릭 후 테스트 -> TX 클릭
+2.                   내가 전송한 음성이 핸드폰에서 들린다.
+3. 한국 그룹에 로그인 - TGID 450 -> Connect -> TX클릭 후 바로 TX클릭
+4. 통신 - 3번 수행 후 TX클릭 -> CGCGCG -> TX클릭 후 응답 기다리기
+5. 대화그룹 변경 - TGID 45020~45089으로 변경 후 통신(둘만의 채널)
+6. 연결그룹끊기 - TGID 4000 -> TX클릭 후 TX클릭
+
+=========================================
+           DVSwitch 서버 설정 절차
+=========================================
+========(0) raspberry pi zero 2 w ==============
+respberrypi  - 192.168.1.10 pi/raspberrypi
+1. 설치OS: other에서 32bit
+2. vi /boot/config.txt
+3. dvs
+$sudo raspi-config
+VNC 포트 : 5900
+
+========(1) dvswitch server on raspberry pi =======
+$sudo apt update
+$sudo apt upgrade
+$sudo reboot
+
+$wget http://dvswitch.org/buster
+$sudo chmod +x buster
+$sudo ./buster
+$sudo apt-get update
+$sudo apt-get install dvswitch-server
+$sudo reboot
+
+========(2) dvswitch server on raspberry pi =======
+#vi /etc/dhcpcd.conf
+# wifi 고정 IP 설정
+interface wlan0
+static ip_address=192.168.1.10
+static routers=192.168.1.1
+$sudo reboot
+LCD화면에서 wifi를 활성화해야 다음부터 자동으로 설정되었다.
+
+========(3)  Overclock 설정 ====================
+#숫자가 너무크면 부하가 걸린다.
+$sudo vi /boot/config.txt
+arm_freq=1100
+over_voltage=2
+$sudo reboot
+
+========(4)  dvswich에 사용자 정보 등록 ============
+$dvs
+
+========(5)  dvsMU로 사용자 추가 ================
+$sudo wget https://github.com/hl5ky/dvsmu/raw/main/setup
+$sudo chmod +x setup
+$sudo ./setup
+$dvsmu (사용자 등록 설정)
